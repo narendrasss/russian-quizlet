@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+::selection {
+    background: $c-highlight;
+    color: white;
+}
+
+html {
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-kerning: auto;
+}
+
+body {
+    font-family: $f-main;
+    font-size: $f-size-base;
+    line-height: 1.8;
+    color: $c-body;
+    z-index: 0;
+}

@@ -1,0 +1,35 @@
+.app-wrapper {
+    width: 100vw;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+}
+
+.app {
+    position: relative;
+    height: 80vh;
+    align-self: center;
+    grid-column: 2 / 6;
+    grid-row: 1;
+}
+
+.nav-questions {
+    position: absolute;
+    top: 1em;
+}
+
+.nav-item {
+    margin-right: 10px;
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.score-wrapper {
+    position: absolute;
+    z-index: 1;
+}
