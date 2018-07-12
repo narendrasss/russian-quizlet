@@ -1,32 +1,11 @@
 'use strict'
 
-/* --- States --- */
+let isRunning = false;
 
-const RUNNING = 0;
-const DEV = 1;
-const FINISH = 2;
-
-let state = RUNNING;
 let score = 0;
 let idx = 0;
 let answered = 0;
-const questions = [
-    Question("он делает", "he makes"),
-    Question("я думаю", "i think"),
-    Question("кажется", "it seems"),
-    Question("я читаю", "i read")
-];
-
-/*
-* Constructor for the Question object.
-*/
-function Question(question, answer) {
-    return {
-        rus: question,
-        eng: answer,
-        answered: false
-    };
-}
+let questions = [];
 
 /*
 * Returns the index of the next unanswered question in questions.
@@ -47,6 +26,22 @@ const isCorrect = (question, input) => {
 }
 
 /*
+* Returns num random questions from the questions database.
+*/
+const getQuestions = num => {
+    let chosen = [];
+    let result = [];
+    while (result.length < num) {
+        const idx = Math.floor(Math.random()*database.length);
+        if (!chosen.includes(idx)) {
+            chosen.push(idx);
+            result.push(database[idx]);
+        }
+    }
+    return result;
+}
+
+/*
 * Changes the question to the question located at index.
 */
 const changeQuestion = (qsn, index) => {
@@ -54,9 +49,8 @@ const changeQuestion = (qsn, index) => {
     const input = document.querySelector(".answer");
     question.innerHTML = "";
     input.value = "";
-    const newQuestion = document.createTextNode(qsn.rus);
     idx = index;
-    question.appendChild(newQuestion);
+    question.appendChild(document.createTextNode(qsn.rus));
     updateNav(index);
 }
 
@@ -95,12 +89,13 @@ const exit = () => {
     // TODO: implement score system
 }
 
-(function init() {
+function init() {
     const qsn = document.querySelector(".question");
     qsn.appendChild(document.createTextNode(questions[0].rus));
-})();
+    buildNav();
+}
 
-(function buildNav() {
+function buildNav() {
     const container = document.querySelector(".nav--questions");
     const template = document.getElementById("nav-item-template");
     const item = template.content.querySelector(".nav_item");
@@ -115,14 +110,21 @@ const exit = () => {
         });
         container.appendChild(newNode);
     }
-})();
+}
 
 (function setListeners() {
     const input = document.querySelector(".answer");
     input.addEventListener("keyup", e => {
         e.preventDefault();
         if (e.keyCode == 13) {
-            updateQuestion();
+            if (!isRunning) {
+                questions = getQuestions(input.value);
+                input.value = "";
+                init();
+                isRunning = true;
+            } else {
+                updateQuestion();
+            }
         }
     });
 })();
