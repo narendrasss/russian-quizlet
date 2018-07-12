@@ -31,11 +31,13 @@ const isCorrect = (question, input) => {
 const getQuestions = num => {
     let chosen = [];
     let result = [];
-    while (result.length < num) {
-        const idx = Math.floor(Math.random()*database.length);
-        if (!chosen.includes(idx)) {
-            chosen.push(idx);
-            result.push(database[idx]);
+    if (num <= database.length) {
+        while (result.length < num) {
+            const idx = Math.floor(Math.random()*database.length);
+            if (!chosen.includes(idx)) {
+                chosen.push(idx);
+                result.push(database[idx]);
+            }
         }
     }
     return result;
@@ -120,8 +122,10 @@ function buildNav() {
             if (!isRunning) {
                 questions = getQuestions(input.value);
                 input.value = "";
-                init();
-                isRunning = true;
+                if (questions.length > 0) {
+                    isRunning = true;
+                    init();
+                }
             } else {
                 updateQuestion();
             }
