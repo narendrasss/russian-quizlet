@@ -35,3 +35,7 @@ input {
     outline: none;
     border: none;
 }
+
+::placeholder {
+    font-style: italic;
+}

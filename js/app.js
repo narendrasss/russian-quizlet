@@ -1,13 +1,20 @@
 'use strict'
 
+/* --- States --- */
+
+const RUNNING = 0;
+const DEV = 1;
+const FINISH = 2;
+
+let state = RUNNING;
 let score = 0;
 let idx = 0;
 let answered = 0;
 const questions = [
-    Question("здравствуйте", "hello"), 
-    Question("мужчина", "man"),
-    Question("спасибо", "thank you"),
-    Question("пожалуйста", "please")
+    Question("он делает", "he makes"),
+    Question("я думаю", "i think"),
+    Question("кажется", "it seems"),
+    Question("я читаю", "i read")
 ];
 
 /*
@@ -56,15 +63,15 @@ const changeQuestion = (qsn, index) => {
 const updateQuestion = () => {
     const curr = questions[idx];
     const input = document.querySelector(".answer");
-    const items = document.querySelectorAll(".nav-item");
+    const items = document.querySelectorAll(".nav_item");
 
     if (isCorrect(curr, input.value)) {
         score++;
-        items[idx].classList.add("nav-item--correct");
+        items[idx].classList.add("nav_item--correct");
     } else {
-        items[idx].classList.add("nav-item--incorrect");
+        items[idx].classList.add("nav_item--incorrect");
     }
-    
+
     curr.answered = true;
     answered++;
     if (++idx >= questions.length) {
@@ -78,21 +85,14 @@ const updateQuestion = () => {
 }
 
 const updateNav = index => {
-    const items = document.querySelectorAll(".nav-item");
-    const prev = document.querySelector(".nav-item--active");
-    prev.classList.remove("nav-item--active");
-    items[index].classList.add("nav-item--active");
+    const items = document.querySelectorAll(".nav_item");
+    const prev = document.querySelector(".nav_item--active");
+    prev.classList.remove("nav_item--active");
+    items[index].classList.add("nav_item--active");
 }
 
 const exit = () => {
-    const apps = document.querySelectorAll(".app");
-    for (let i = 0; i < apps.length; i++) {
-        apps[i].classList.toggle("app--active");
-    }
-    const scoreNode = document.querySelector(".score");
-    scoreNode.appendChild(
-        document.createTextNode(`${score}/${questions.length}`)
-    );
+    // TODO: implement score system
 }
 
 (function init() {
@@ -101,14 +101,14 @@ const exit = () => {
 })();
 
 (function buildNav() {
-    const container = document.querySelector(".nav-questions");
+    const container = document.querySelector(".nav--questions");
     const template = document.getElementById("nav-item-template");
-    const item = template.content.querySelector(".nav-item");
+    const item = template.content.querySelector(".nav_item");
     for (let i = 0; i < questions.length; i++) {
         const newNode = document.importNode(item, true);
         newNode.setAttribute("id", i);
         if (i == idx) {
-            newNode.classList.add("nav-item--active");
+            newNode.classList.add("nav_item--active");
         }
         newNode.addEventListener("click", e => {
             changeQuestion(questions[newNode.id], newNode.id);
