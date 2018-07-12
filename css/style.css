@@ -156,9 +156,17 @@ input {
   list-style: none;
   border-radius: 50%; }
   .nav-item:hover {
-    background: #A6A4A0; }
+    background: #A6A4A0;
+    transform: scale(1.5); }
+
+.nav-item--correct {
+  background: #45c48b; }
+
+.nav-item--incorrect {
+  background: #ff5851; }
 
 .nav-item--active {
-  background: #A6A4A0; }
+  background: #A6A4A0;
+  transform: scale(1.5); }
 
 /*# sourceMappingURL=style.css.map */

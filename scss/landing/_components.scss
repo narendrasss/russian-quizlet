@@ -78,9 +78,19 @@
     border-radius: 50%;
     &:hover {
         background: $c-body-s;
+        transform: scale(1.5);
     }
+}
+
+.nav-item--correct {
+    background: $c-correct;
+}
+
+.nav-item--incorrect {
+    background: $c-highlight;
 }
 
 .nav-item--active {
     background: $c-body-s;
+    transform: scale(1.5);
 }

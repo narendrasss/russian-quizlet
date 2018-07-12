@@ -10,13 +10,38 @@ const questions = [
     Question("пожалуйста", "please")
 ];
 
+/*
+* Constructor for the Question object.
+*/
 function Question(question, answer) {
     return {
         rus: question,
-        eng: answer
+        eng: answer,
+        answered: false
     };
 }
 
+/*
+* Returns the index of the next unanswered question in questions.
+*/
+const getNextUnanswered = () => {
+    for (let i = 0; i < questions.length; i++) {
+        if (!questions[i].answered) {
+            return i;
+        }
+    }
+}
+
+/*
+* Returns true if the user answer is correct.
+*/
+const isCorrect = (question, input) => {
+    return question.eng == input;
+}
+
+/*
+* Changes the question to the question located at index.
+*/
 const changeQuestion = (qsn, index) => {
     const question = document.querySelector(".question");
     const input = document.querySelector(".answer");
@@ -31,14 +56,19 @@ const changeQuestion = (qsn, index) => {
 const updateQuestion = () => {
     const curr = questions[idx];
     const input = document.querySelector(".answer");
-    if (++idx >= questions.length) {
-        idx = 0;
-    }
-    answered++;
+    const items = document.querySelectorAll(".nav-item");
 
-    if (input.value == curr.eng) {
+    if (isCorrect(curr, input.value)) {
         score++;
-        console.log(score);
+        items[idx].classList.add("nav-item--correct");
+    } else {
+        items[idx].classList.add("nav-item--incorrect");
+    }
+    
+    curr.answered = true;
+    answered++;
+    if (++idx >= questions.length) {
+        idx = getNextUnanswered();
     }
     if (answered == questions.length) {
         exit();
@@ -60,7 +90,9 @@ const exit = () => {
         apps[i].classList.toggle("app--active");
     }
     const scoreNode = document.querySelector(".score");
-    scoreNode.appendChild(document.createTextNode(`${score}/${questions.length}`))
+    scoreNode.appendChild(
+        document.createTextNode(`${score}/${questions.length}`)
+    );
 }
 
 (function init() {
